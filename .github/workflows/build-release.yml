@@ -27,7 +27,7 @@ jobs:
         with:
           lfs: 'true'
           path: 'UnityRuntime'
-          submodules: ${{ github.event_name != 'pull_request' }}
+          submodules: 'false'
 
       - name: 'Remove UMP Directory'
         working-directory: 'UnityRuntime'
