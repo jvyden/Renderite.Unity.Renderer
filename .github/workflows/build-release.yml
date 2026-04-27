@@ -3,13 +3,7 @@ name: 'Build the Unity Runtime'
 on:
   push:
     branches:
-      - main
-  pull_request_target:
-    types:
-      - opened
-      - reopened
-      - ready_for_review
-      - synchronize
+      - il2cpp-testing
   workflow_dispatch:
 
 permissions:
@@ -19,7 +13,7 @@ permissions:
 jobs:
   build-runtime:
     name: 'Build the Unity Runtime'
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - name: 'Checkout composite actions'
@@ -44,6 +38,7 @@ jobs:
 
       - name: 'Determine token to use'
         id: token-determination
+        shell: bash
         run: |
           TOKEN="${{ github.token }}"
 
@@ -61,9 +56,9 @@ jobs:
           token: '${{ steps.token-determination.outputs.token }}'
           submodules: ${{ github.event_name != 'pull_request' }}
 
-      - name: 'Remove UMP Directory on external PR'
-        if: github.event_name == 'pull_request'
+      - name: 'Remove UMP Directory'
         working-directory: 'UnityRuntime'
+        shell: bash
         run: rm -rf Assets/UniversalMediaPlayer
 
       - name: 'Install Unity'
@@ -72,7 +67,7 @@ jobs:
         with:
           unity-version: '2019.4.19f1'
           modules: |
-            windows-mono
+            windows-il2cpp
           cache-installation: 'true'
 
       - name: 'Activate Unity license'
@@ -83,4 +78,8 @@ jobs:
           password: '${{ secrets.UNITY_CI_PASSWORD }}'
 
       - name: 'Build Unity Runtime'
-        run: ${{ steps.unity-setup.outputs.unity-editor-path }} -quit -batchmode -nographics -projectPath UnityRuntime/ -buildTarget StandaloneWindows64 -executeMethod AppBuilder.BuildWindows
+        run: ${{ steps.unity-setup.outputs.unity-editor-path }} -quit -batchmode -nographics -projectPath UnityRuntime/ -buildTarget StandaloneWindows64 -executeMethod AppBuilder.BuildWindowsIL2CPP_Release
+        
+      - name: 'Upload built artifact'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        path: WindowsIL2CPP/
