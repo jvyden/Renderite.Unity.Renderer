@@ -36,9 +36,7 @@ jobs:
         
       - name: Install Visual C++ Redistributables
         run: |
-          choco install vcredist140 -y
-          choco install vcredist2015 -y
-          choco install vcredist2017 -y
+          choco install vcredist-all -y
 
       - name: 'Install Unity'
         uses: buildalon/unity-setup@ce7a36727d19c525883931d4b09b27d4fa92823a # v2.4.0
