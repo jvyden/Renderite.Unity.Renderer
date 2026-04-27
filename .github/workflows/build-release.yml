@@ -52,7 +52,7 @@ jobs:
           password: '${{ secrets.UNITY_CI_PASSWORD }}'
 
       - name: 'Build Unity Runtime'
-        run: ${{ steps.unity-setup.outputs.unity-editor-path }} -quit -batchmode -nographics -projectPath UnityRuntime/ -buildTarget StandaloneWindows64 -executeMethod AppBuilder.BuildWindowsIL2CPP_Release
+        run: '${{ steps.unity-setup.outputs.unity-editor-path }}' -quit -batchmode -nographics -projectPath UnityRuntime/ -buildTarget StandaloneWindows64 -executeMethod AppBuilder.BuildWindowsIL2CPP_Release
         
       - name: 'Upload built artifact'
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
