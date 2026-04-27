@@ -519,7 +519,7 @@
         "runtime": {
           "lib/net462/CSCore.dll": {
             "assemblyVersion": "1.2.1.2",
-            "fileVersion": "0.0.0.0"
+            "fileVersion": "1.2.1.2"
           }
         }
       },
